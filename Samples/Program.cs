@@ -7,81 +7,9 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            /*
-                create variables that have the correct type
-                      body temp 98.6 float
-                      altitude    int
-                      miles per gallon          float
-                      is my car running         boolean
-                      salary                    float, decimal, double
-                      Bill Gates net worth      long, ulong
-                      ave test scores           float, decimal
-                      world population > 8B     long  ulong
-                      distance                  ulong measure in miles, ly
-
-                comparison     
-                        if
-                        operators   ==  <   >   <=  !=
-                        compare X to Z
-                        if ( x operator z )
-                        {
-                        }
-
-                loops
-                        for         when you know how many times
-                        do-while    (at least one time)    
-                        while
-
-                        break       exiting a loop
-                        return      exit loop and exit the method
-                
-                        continue    skip part of the loop. Go to the top of the loop
-
-                methods
-                    signature
-                        return      TYPE     
-                        method      name
-                        parameters  zero or more
-                            opening paren (
-                                        TYPE parma1,  TYPE param2, TYPE param3
-                            closing paren )
-
-                    body
-                        {
-                                every thing between the braces
-                        }
-                classes
-                    properties
-                    methods
-                    constructors
-
-            Assignment
-                save the return value of each function to an appropriately typed variable
-                print a message and the return value
-
-                get two numbers from user
-                create function to return the larger number, code must use if statments
-                create function to return the smaller number, code must use the ? : construct
-
-                get string from user
-                create function to return the number of words               
-                create function to return the longest word in the string
-
-                ask user for a number
-                create a function, passing in the number
-                    create an array of strings the size of the number passed in
-                    use a for loop to ask the user for names
-                    add the names to the string array you created
-                    return the array
-
-                useing the same number
-                create a function 
-
-            */
-
             //      IfStatements();
             //      ForStatements();
-            //      FixedSentinelWithTryParse();
+            //      LoopWithTryParse();
             //      GreatestCommonDivisor();
             //      ArrayExamples();
             //      ConditionalArraySearch();
@@ -91,9 +19,127 @@ namespace Samples
             //      ListDemo();
             //      Variables();
             //      StringTests();
+            int result;
+            int number1, number2;
+
+            number1 = GetUserNumber("#1 ");
+            number2 = GetUserNumber("#2 ");
+            result = GetBigger(number1, number2);
+            Console.WriteLine("This is the bigger number: {0}", result);
+
+            number1 = GetUserNumber("#1 ");
+            number2 = GetUserNumber("#2 ");
+            result = GetBigger2(number1, number2);
+            Console.WriteLine("This is the bigger number: {0}", result);
+
+            string name = GetUserInput("Enter a string ");
+            GetWordCount(name);
+            Console.WriteLine("{0} has {1} words", name, result);
+
             Console.ReadLine();
         }
 
+        /*
+            create variables that have the correct type
+                  body temp 98.6 float
+                  altitude    int
+                  miles per gallon          float
+                  is my car running         boolean
+                  salary                    float, decimal, double
+                  Bill Gates net worth      long, ulong
+                  ave test scores           float, decimal
+                  world population > 8B     long  ulong
+                  distance                  ulong measure in miles, ly
+
+            comparison     
+                    if
+                    operators   ==  <   >   <=  !=
+                    compare X to Z
+                    if ( x operator z )
+                    {
+                    }
+
+            loops
+                    for         when you know how many times
+                    do-while    (at least one time)    
+                    while
+
+                    break       exiting a loop
+                    return      exit loop and exit the method
+
+                    continue    skip part of the loop. Go to the top of the loop
+
+            methods
+                signature
+                    return      TYPE     
+                    method      name
+                    parameters  zero or more
+                        opening paren (
+                                    TYPE parma1,  TYPE param2, TYPE param3
+                        closing paren )
+
+                body
+                    {
+                            every thing between the braces
+                    }
+            classes
+                properties
+                methods
+                constructors
+                */
+
+                /*
+        Assignment
+            save the return value of each function to an appropriately typed variable
+            print a message and the return value
+*/
+/*
+            get two numbers from user
+            create function to return the larger number, code must use if statments
+            create function to return the smaller number, code must use the ? : construct
+            */
+        public static int GetBigger(int num1, int num2)
+        {
+            if (num1 > num2)
+            {
+                return num1;
+            }
+            else
+            {
+                return num2;
+            }
+        }
+
+        public static int GetBigger2(int num1, int num2)
+        {
+            return (num1 > num2) ? num1 : num2;
+        }
+
+        /*
+        get string from user in main
+        create function to return the number of words
+        function is called GetWordCount
+        */
+        public static int GetWordCount(string str)
+        {
+
+        }
+        /*
+            create function to return the longest word in the string
+        */
+
+        /*
+        ask user for a number in main
+        create a function, passing in the number
+            create an array of strings the size of the number passed in
+            use a for loop to ask the user for names
+            add the names to the string array you created
+            return the array
+
+        useing the same number
+        create a function 
+
+    */
         public static void StringTests()
         {
             while (true)
@@ -159,10 +205,9 @@ namespace Samples
             String.Format("[{0, -10}]", "Foo");    //   [Foo∙∙∙∙∙∙∙]
     }
 
-
         public static int CalculateCentury(int year)
         {
-            return year / 100 + ((year % 100 != 0) ? 1 : 0);
+            return year / 100 + ((year % 100 == 0) ? 0 : 1);
         }
 
         private static void ConditionalArraySearch()
@@ -240,25 +285,16 @@ namespace Samples
             } while (userResponse.Length > 0);
 
         }
-        private static int GetUserNumber(string prompt, int maxNum)
+
+        private static int GetUserNumber(string prompt)
         {
             int userNumber;
-            string strNumber = GetUserInput(prompt + " " + maxNum);
-            while ( ! Int32.TryParse(strNumber, out userNumber) || userNumber > maxNum )
+            string strNumber = GetUserInput(prompt);
+            while ( ! Int32.TryParse(strNumber, out userNumber))
             {
-                Console.WriteLine("That is not an integer or is > " + maxNum + ".  Please Reenter.");
-                strNumber = GetUserInput(prompt + " " + maxNum);
+                Console.WriteLine("That is not an integer");
+                strNumber = GetUserInput(prompt);
             }
-
-            do
-            {
-                strNumber = GetUserInput(prompt + " " + maxNum);
-                if (Int32.TryParse(strNumber, out userNumber) && userNumber <= maxNum)
-                {
-                    break;
-                }
-                Console.WriteLine("That is not an integer or is > " + maxNum + ".  Please Reenter.");
-            } while (true);
 
             return userNumber;
         }
@@ -488,12 +524,12 @@ namespace Samples
             }
         }
 
-        static void FixedSentinelWithTryParse()
+        static void LoopWithTryParse()
         {
             int nTestScore = 0, nTotalScores = 0;
             double dblRunningTotal = 0;
 
-            //loops until sentinel value < 0 is typed.
+            //loops until negative score value < 0 is typed.
             while (nTestScore >= 0)
             {
                 //initial prompt
@@ -582,6 +618,5 @@ namespace Samples
             DateTime dt = new DateTime();
             return dt;
         }
-
     }
 }

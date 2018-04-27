@@ -7,18 +7,43 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            //      IfStatements();
-            //      ForStatements();
-            //      LoopWithTryParse();
-            //      GreatestCommonDivisor();
-            //      ArrayExamples();
-            //      ConditionalArraySearch();
-            //      Fibonacci();
-            //      FunWithStrings();
-            //      PlayLottery();
-            //      ListDemo();
-            //      Variables();
-            //      StringTests();
+            IfStatements();
+            ForStatements();
+            LoopWithTryParse();
+            GreatestCommonDivisor();
+            ArrayExamples();
+            ParsingTest();
+            Fibonacci();
+            FunWithStrings();
+            PlayLottery();
+            ListDemo();
+            Variables();
+            StringTests();
+            NumberCompare();
+            WordArrays();
+            int number1 = GetUserNumber("Array Size? ");
+            string[] names = GetNameList(number1);
+            for (int i = 0; i < names.Length; i++)
+            {
+                Console.WriteLine("Name {0} : {1}", i, names[i]);
+            }
+            Console.ReadLine();
+        }
+
+        private static void WordArrays()
+        {
+            int result;
+            string line = GetUserInput("Enter a string ");
+            result = GetWordCount(line);
+            Console.WriteLine("WordCount for {0} : {1} words", line, result);
+
+            string longestWord = GetLongestWord(line);
+            Console.WriteLine("Longest word: {0}", longestWord);
+
+        }
+
+        private static void NumberCompare()
+        {
             int result;
             int number1, number2;
 
@@ -32,11 +57,6 @@ namespace Samples
             result = GetBigger2(number1, number2);
             Console.WriteLine("This is the bigger number: {0}", result);
 
-            string name = GetUserInput("Enter a string ");
-            GetWordCount(name);
-            Console.WriteLine("{0} has {1} words", name, result);
-
-            Console.ReadLine();
         }
 
         /*
@@ -88,16 +108,16 @@ namespace Samples
                 constructors
                 */
 
-                /*
-        Assignment
-            save the return value of each function to an appropriately typed variable
-            print a message and the return value
+        /*
+Assignment
+    save the return value of each function to an appropriately typed variable
+    print a message and the return value
 */
-/*
-            get two numbers from user
-            create function to return the larger number, code must use if statments
-            create function to return the smaller number, code must use the ? : construct
-            */
+        /*
+                    get two numbers from user
+                    create function to return the larger number, code must use if statments
+                    create function to return the smaller number, code must use the ? : construct
+                    */
         public static int GetBigger(int num1, int num2)
         {
             if (num1 > num2)
@@ -122,24 +142,54 @@ namespace Samples
         */
         public static int GetWordCount(string str)
         {
+//            return str.Split(" ").Length;
+            string[] strArray = str.Split(" ");
+            int wordCount = 0;
+            for (int i = 0; i < strArray.Length; i++)
+            {
+                if (strArray[i].Length > 0)
+                    wordCount++;
+            }
+            return wordCount;
+        }
 
+        /*
+            create function to return the longest word in a string
+        */
+        public static string GetLongestWord(string sentence)
+        {
+            string[] words = sentence.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string longestWord = "";
+
+            foreach (string word in words)
+            {
+                if (word.Length > longestWord.Length)
+                {
+                    longestWord = word;
+                }
+            }
+            return longestWord;
         }
         /*
-            create function to return the longest word in the string
-        */
-
-        /*
         ask user for a number in main
-        create a function, passing in the number
+        create a function GetNameList, passing in the number
             create an array of strings the size of the number passed in
             use a for loop to ask the user for names
             add the names to the string array you created
             return the array
+            up in main print out the array using foreach 
+        */
+        public static string[] GetNameList(int size)
+        {
+            string[] list = new string[size];
 
-        useing the same number
-        create a function 
+            for (int i = 0; i < size; i++)
+            {
+                list[i] = GetUserInput("Name " + (i + 1) + " ");
+            }
+            return list;
+        }
 
-    */
         public static void StringTests()
         {
             while (true)
@@ -210,15 +260,15 @@ namespace Samples
             return year / 100 + ((year % 100 == 0) ? 0 : 1);
         }
 
-        private static void ConditionalArraySearch()
+        private static void ParsingTest()
         {
             while (true)
             {
                 float       floatNum;
                 int         intNum, fCnt = 0, iCnt = 0, sCnt = 0 ;
-                string[]    strArray    = new string[10];
-                int[]       intArray    = new int[10];
-                float[]     floatArray  = new float[5];
+                string[]    strArray    = new string[5];
+                int[]       intArray    = new int[3];
+                float[]     floatArray  = new float[2];
 
                 string input = GetUserInput("give me anything ");
                 if (input.Equals("done"))

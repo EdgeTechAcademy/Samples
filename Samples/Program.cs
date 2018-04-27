@@ -8,8 +8,6 @@ namespace Samples
         static void Main(string[] args)
         {
             /*
-              
-
                 create variables that have the correct type
                       body temp 98.6 float
                       altitude    int
@@ -57,6 +55,28 @@ namespace Samples
                     methods
                     constructors
 
+            Assignment
+                save the return value of each function to an appropriately typed variable
+                print a message and the return value
+
+                get two numbers from user
+                create function to return the larger number, code must use if statments
+                create function to return the smaller number, code must use the ? : construct
+
+                get string from user
+                create function to return the number of words               
+                create function to return the longest word in the string
+
+                ask user for a number
+                create a function, passing in the number
+                    create an array of strings the size of the number passed in
+                    use a for loop to ask the user for names
+                    add the names to the string array you created
+                    return the array
+
+                useing the same number
+                create a function 
+
             */
 
             //      IfStatements();
@@ -66,7 +86,7 @@ namespace Samples
             //      ArrayExamples();
             //      ConditionalArraySearch();
             //      Fibonacci();
-            FunWithStrings();
+            //      FunWithStrings();
             //      PlayLottery();
             //      ListDemo();
             //      Variables();
@@ -424,9 +444,12 @@ namespace Samples
             int dIndex = name.LastIndexOf('d');
             Console.WriteLine("Found last 'd' at: " + dIndex);
 
+            name = "Gary Thomas James";
+            string initials = "";
             string[] aNames = name.Split(" ");
             foreach (string str in aNames)
             {
+                initials += str.Substring(0, 1);
                 string padLeft = str.PadLeft(15, '.');
                 string padRight = str.PadRight(15, '_');
                 Console.WriteLine("Pad Left  ->" + padLeft + "<");
@@ -435,6 +458,7 @@ namespace Samples
                 Console.WriteLine("Unpad " + padLeft.Trim('.'));
                 Console.WriteLine("Unpad " + padRight.Trim('_'));
             }
+            Console.WriteLine("Intials for {0} are {1}", name, initials);
 
             string nickName = name.Remove(4);
             Console.WriteLine(nickName);
@@ -442,6 +466,8 @@ namespace Samples
             Console.WriteLine("Chop characters out of the middle: " + name.Substring(7, 8));
 
             Console.WriteLine("Look Ma! No 'e's! " + name.Replace('e', '_'));
+
+            string just1Letter = name.Substring(3, 1);
 
             Console.WriteLine("UPPER: {0} {1}", name, name.ToUpper());
             Console.WriteLine("lower: {0} {1}", name, name.ToLower());

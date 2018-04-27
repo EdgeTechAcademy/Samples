@@ -7,26 +7,26 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            IfStatements();
-            ForStatements();
-            LoopWithTryParse();
-            GreatestCommonDivisor();
-            ArrayExamples();
+            //IfStatements();
+            //ForStatements();
+            //LoopWithTryParse();
+            //GreatestCommonDivisor();
+            //ArrayExamples();
             ParsingTest();
-            Fibonacci();
-            FunWithStrings();
-            PlayLottery();
-            ListDemo();
-            Variables();
-            StringTests();
-            NumberCompare();
-            WordArrays();
-            int number1 = GetUserNumber("Array Size? ");
-            string[] names = GetNameList(number1);
-            for (int i = 0; i < names.Length; i++)
-            {
-                Console.WriteLine("Name {0} : {1}", i, names[i]);
-            }
+            //Fibonacci();
+            //FunWithStrings();
+            //PlayLottery();
+            //ListDemo();
+            //Variables();
+            //StringTests();
+            //NumberCompare();
+            //WordArrays();
+            //int number1 = GetUserNumber("Array Size? ");
+            //string[] names = GetNameList(number1);
+            //for (int i = 0; i < names.Length; i++)
+            //{
+            //    Console.WriteLine("Name {0} : {1}", i, names[i]);
+            //}
             Console.ReadLine();
         }
 
@@ -262,36 +262,73 @@ Assignment
 
         private static void ParsingTest()
         {
+            float floatNum;
+            int intNum, fCnt = 0, iCnt = 0, sCnt = 0;
+            string[] strArray = new string[5];
+            int[] intArray = new int[3];
+            float[] floatArray = new float[2];
+
             while (true)
             {
-                float       floatNum;
-                int         intNum, fCnt = 0, iCnt = 0, sCnt = 0 ;
-                string[]    strArray    = new string[5];
-                int[]       intArray    = new int[3];
-                float[]     floatArray  = new float[2];
-
-                string input = GetUserInput("give me anything ");
-                if (input.Equals("done"))
+                string input = GetUserInput("give me anything or 'exit' pr 'stats'\n\t-> ");
+                
+                //      exit if user types exit
+                if (input.Equals("exit"))
                     break;
-                if (float.TryParse(input, out floatNum))
+
+                //  show some stats
+                if (input.Equals("stats"))
+                {
+                    Console.WriteLine("\n\tFloats {0}\n\tInts {1}\n\tStrings {2}\n", floatArray.Length, intArray.Length, strArray.Length);
+                    continue;
+                }
+
+                //      did we get an integer
+                //          then add to the int array IF there is room
+                if (Int32.TryParse(input, out intNum))
+                {
+                    if (iCnt < intArray.Length)
+                        intArray[iCnt++] = intNum;
+                    else
+                    {
+                        Console.WriteLine("Int array is full!");
+                        foreach (int item in intArray)
+                        {
+                            Console.WriteLine("\t{0}", item);
+                        }
+                    }
+                }
+
+                //      did we get a float
+                //          then add to the float array IF there is room
+                else if (float.TryParse(input, out floatNum))
                 {
                     if (fCnt < floatArray.Length)
                         floatArray[fCnt++] = floatNum;
                     else
+                    {
                         Console.WriteLine("Float array is full!");
+                        foreach (float item in floatArray)
+                        {
+                            Console.WriteLine("\t{0}", item);
+                        }
+                    }
                 }
-                else if (Int32.TryParse(input, out intNum))  {
-                    if (iCnt < intArray.Length)
-                        intArray[iCnt++] = intNum;
-                    else
-                        Console.WriteLine("Int array is full!");
-                }
+
+                //      if MUST be a string 
+                //          then add to the string array IF there is room
                 else
                 {
                     if (sCnt < strArray.Length)
                         strArray[sCnt++] = input;
                     else
+                    {
                         Console.WriteLine("String array is full!");
+                        foreach (string item in strArray)
+                        {
+                            Console.WriteLine("\t{0}", item);
+                        }
+                    }
                 }
             }
         }

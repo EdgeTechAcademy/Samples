@@ -270,7 +270,7 @@ Assignment
 
             while (true)
             {
-                string input = GetUserInput("give me anything or 'exit' pr 'stats'\n\t-> ");
+                string input = GetUserInput("give me anything or 'exit' or 'stats'\n\t-> ");
                 
                 //      exit if user types exit
                 if (input.Equals("exit"))
@@ -389,7 +389,8 @@ Assignment
         private static string GetUserInput(string prompt)
         {
             Console.Write(prompt);
-            return Console.ReadLine();
+            string str = Console.ReadLine();
+            return str;
         }
 
         private static int RandomNumber(int min, int max)

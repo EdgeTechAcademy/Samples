@@ -15,55 +15,26 @@ namespace Samples
                     case "menu":
                         Console.WriteLine("\tif\tfor\ttry\tgcd\tarray\tparse\tfib\tstrings\n\tlottery\tlist\tbar\tstring\tnum\twords\tfill");
                         break;
-                    case "if":
-                        IfStatements();
-                        break;
-                    case "for":
-                        ForStatements();
-                        break;
-                    case "try":
-                        LoopWithTryParse();
-                        break;
-                    case "gcd":
-                        GreatestCommonDivisor();
-                        break;
-                    case "array":
-                        ArrayExamples();
-                        break;
-                    case "parse":
-                        ParsingTest();
-                        break;
-                    case "fib":
-                        Fibonacci();
-                        break;
-                    case "strings":
-                        FunWithStrings();
-                        break;
-                    case "lottery":
-                        PlayLottery();
-                        break;
-                    case "list":
-                        ListDemo();
-                        break;
-                    case "var":
-                        Variables();
-                        break;
-                    case "string":
-                        StringTests();
-                        break;
-                    case "num":
-                        NumberCompare();
-                        break;
-                    case "words":
-                        WordArrays();
-                        break;
-                    case "fill":
-                        string[] names = GetNameList(GetUserNumber("Array Size? "));
-                        for (int i = 0; i < names.Length; i++)
-                        {
-                            Console.WriteLine("Name {0} : {1}", i, names[i]);
-                        }
-                        break;
+                    case "if":      IfStatements();     break;
+                    case "for":     ForStatements();    break;
+                    case "try":     LoopWithTryParse(); break;
+                    case "gcd":     GreatestCommonDivisor();    break;
+                    case "array":   ArrayExamples();    break;
+                    case "parse":   ParsingTest();      break;
+                    case "fib":     Fibonacci();        break;
+                    case "strings": FunWithStrings();   break;
+                    case "lottery": PlayLottery();      break;
+                    case "list":    ListDemo();         break;
+                    case "var":     Variables();        break;
+                    case "string":  StringTests();      break;
+                    case "num":     NumberCompare();    break;
+                    case "words":   WordArrays();       break;
+                    case "fill":    string[] names = GetNameList(GetUserNumber("Array Size? "));
+                                    for (int i = 0; i < names.Length; i++)
+                                    {
+                                        Console.WriteLine("Name {0} : {1}", i, names[i]);
+                                    }
+                                    break;
                 }
             }
         }

@@ -11,9 +11,13 @@ namespace Samples
             {
                 switch (GetUserInput("? "))
                 {
+                    case "exit": return;
+                    case "x": return;
                     case "":
                     case "menu":
-                        Console.WriteLine("\tif\tfor\ttry\tgcd\tarray\tparse\tfib\tstrings\n\tlottery\tlist\tbar\tstring\tnum\twords\tfill");
+                        Console.WriteLine("\tif\tfor\ttry\tgcd\tarray\tparse\tfib\n" +
+                            "\tstrings\n\tlottery\tlist\tbar\tstring\tnum\twords\tfill\n" +
+                            "\tchange\ttime\n\texit");
                         break;
                     case "if":      IfStatements();     break;
                     case "for":     ForStatements();    break;
@@ -28,6 +32,17 @@ namespace Samples
                     case "var":     Variables();        break;
                     case "string":  StringTests();      break;
                     case "num":     NumberCompare();    break;
+                    case "change":  MakeChange();       break;
+                    case "time":
+                        int seconds = 0;
+                        while (seconds >= 0)
+                        {
+                            string time = GetUserInput("Unit of Time: ");
+                            seconds = GetSeconds(time);
+                            Console.WriteLine("There are " + seconds + " seconds in a " + time);
+                        }
+                        break;
+
                     case "words":   WordArrays();       break;
                     case "fill":    string[] names = GetNameList(GetUserNumber("Array Size? "));
                                     for (int i = 0; i < names.Length; i++)
@@ -37,6 +52,54 @@ namespace Samples
                                     break;
                 }
             }
+        }
+
+        private static int GetSeconds(string time)
+        {
+            int seconds;
+            switch ( time.ToUpper() )
+            {
+                case "Y":   seconds = 365 * 24 * 60 * 60;   break;
+                case "W":   seconds =   7 * 24 * 60 * 60;   break;
+                case "D":   seconds =       24 * 60 * 60;   break;
+                case "H":   seconds =            60 * 60;   break;
+                case "M":   seconds =                 60;   break;
+                case "S":   seconds = 1;                    break;
+                default:    seconds = -1;                   break;
+            }
+            return seconds;
+        }
+
+        private static void MakeChange()
+        {
+            Random rnd = new Random();
+            string exit = "";
+            while (!exit.Equals("x"))
+            {
+                int intPrice = rnd.Next(1, 100);
+                decimal price = (decimal)intPrice / 100.00M + rnd.Next(10);
+                int tendered = rnd.Next((int)price, (int)price + rnd.Next(20));
+                string change = MakingChange(tendered, price);
+                exit = GetUserInput(change);
+            }
+        }
+
+        public static string MakingChange(decimal tenderedAmt, decimal price)
+        {
+            string[] name = { "Dollar", "Quater", "Dime", "Nickel", "Cent" };
+            decimal coin;
+            decimal[] denom = { 1.00M, .25M, .10M, 0.05M, 0.01M };
+            string change = "Change from " + tenderedAmt + " for " + price + "\n\t";
+            decimal remainder = tenderedAmt - price;
+
+            for (int z = 0; z < denom.Length; z++)
+            {
+                coin = (int)(remainder / denom[z]);
+                remainder %= denom[z];
+                change += name[z] + (coin != 1 ? "s " : "  ") + coin + " ";
+            }
+
+            return change;
         }
 
         private static void WordArrays()

@@ -17,7 +17,7 @@ namespace Samples
                     case "menu":
                         Console.WriteLine("\tif\tfor\ttry\tgcd\tarray\tparse\tfib\n" +
                             "\tstrings\n\tlottery\tlist\tbar\tstring\tnum\twords\tfill\n" +
-                            "\tchange\ttime\n\texit");
+                            "\tchange\ttime\tlist\tenglish\n\texit");
                         break;
                     case "if":      IfStatements();     break;
                     case "for":     ForStatements();    break;
@@ -32,7 +32,7 @@ namespace Samples
                     case "var":     Variables();        break;
                     case "string":  StringTests();      break;
                     case "num":     NumberCompare();    break;
-                    case "change":  MakeChange();       break;
+                    case "change":  MakeChange(); break;
                     case "time":
                         int seconds = 0;
                         while (seconds >= 0)
@@ -44,14 +44,93 @@ namespace Samples
                         break;
 
                     case "words":   WordArrays();       break;
-                    case "fill":    string[] names = GetNameList(GetUserNumber("Array Size? "));
-                                    for (int i = 0; i < names.Length; i++)
-                                    {
-                                        Console.WriteLine("Name {0} : {1}", i, names[i]);
-                                    }
-                                    break;
+                    case "fill":
+                        string[] names = GetNameList(GetUserNumber("Array Size? "));
+                        for (int i = 0; i < names.Length; i++)
+                        {
+                            Console.WriteLine("Name {0} : {1}", i, names[i]);
+                        }
+                        break;
+
+                    case "english" :
+                        for (int i = 0; i < 100; i++)
+                        {
+                            string english = ConvertToEnglish(i);
+                            Console.WriteLine("{0} in English: {1}", i, english);
+                        }
+                        break;
                 }
             }
+        }
+
+        public static string ConvertToEnglish(int num)
+        {
+            string word;
+            string oneWord, tenWord;
+
+            string[] aTens = { "", "", "Twenty-", "Thirty-", "Forty-", "Fifty-", "Sixty-", "Seventy-", "Eighty-", "Ninety-" };
+            string[] aOnes = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" };
+
+            int tens = num / 10;
+            int ones = num % 10;
+
+            //      table driven design
+            //word = aTens[tens] + aOnes[ones];
+
+            switch (tens)
+            {
+                case 2: tenWord = "Twenty-"; break;
+                case 3: tenWord = "Thirty-"; break;
+                case 4: tenWord = "Forty-"; break;
+                case 5: tenWord = "Fifty-"; break;
+                case 6: tenWord = "Sixty-"; break;
+                case 7: tenWord = "Seventy-"; break;
+                case 8: tenWord = "Eighty-"; break;
+                case 9: tenWord = "Ninety-"; break;
+                default: tenWord = ""; break;
+            }
+
+            oneWord = OnesToEnglish(ones);
+            word = tenWord + oneWord;
+
+            //      Special Cases 0 and the teens
+            switch (num)
+            {
+                case 0:  word = "Zero"; break;
+                case 10: word = "Ten"; break;
+                case 11: word = "Eleven"; break;
+                case 12: word = "Twelve"; break;
+                case 13: word = "Thirteen"; break;
+                case 15: word = "Fifteen"; break;
+                case 18: word = "Eighteen"; break;
+                case 14:
+                case 16:
+                case 17:
+                case 19:
+                    word = aOnes[ones] + "teen";
+                    break;
+            }
+            return word.TrimEnd('-');
+        }
+
+        public static string OnesToEnglish(int ones)
+        {
+            string word = "";
+
+            switch (ones)
+            {
+                case 0: word = ""; break;
+                case 1: word = "One"; break;
+                case 2: word = "Two"; break;
+                case 3: word = "Three"; break;
+                case 4: word = "Four"; break;
+                case 5: word = "Five"; break;
+                case 6: word = "Six"; break;
+                case 7: word = "Seven"; break;
+                case 8: word = "Eight"; break;
+                case 9: word = "Nine"; break;
+            }
+            return word;
         }
 
         private static int GetSeconds(string time)
@@ -405,16 +484,59 @@ Assignment
             }
         }
 
+        private static void DictionaryDemo()
+        {
+            //string course, student;
+            //Dictionary<string, List<string>> courses = new Dictionary<string, List<string>>();
+
+            //do
+            //{
+            //    course = GetUserInput("Add to Courses");
+            //    student = GetUserInput("Add to Student");
+            //    courses.Add(course);
+
+            //} while (!userResponse.ToLower().Equals("stop"));
+
+            //Console.WriteLine();
+            //do
+            //{
+            //    userResponse = GetUserInput("Search List for: ");
+            //    bool found = names.Contains(userResponse);
+            //    if (found)
+            //    {
+            //        int where = names.IndexOf(userResponse);
+            //        Console.WriteLine("\t" + userResponse + " Was found at " + where);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("\t" + userResponse + " Was not found");
+            //    }
+            //} while (!userResponse.ToLower().Equals("stop"));
+
+            //Console.WriteLine();
+            //do
+            //{
+            //    userResponse = GetUserInput("Find in List: ");
+            //    List<string> subNames = names.FindAll(p => p.Contains(userResponse));
+            //    foreach (var item in subNames)
+            //    {
+            //        Console.WriteLine("\t" + item);
+            //    }
+            //} while (userResponse.Length > 0);
+
+        }
+
         private static void ListDemo()
         {
             string userResponse;
+            Console.WriteLine("Enter 'stop' to stop entering names");
             List<string> names = new List<string>() { "Gary", "Thomas", "James" };
             do
             {
                 userResponse = GetUserInput("Add to List ");
                 names.Add(userResponse);
 
-            } while (userResponse.ToLower().CompareTo("stop") != 0);
+            } while (! userResponse.ToLower().Equals("stop"));
 
             Console.WriteLine();
             do

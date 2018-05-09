@@ -66,10 +66,11 @@ namespace Samples
         public static string ConvertToEnglish(int num)
         {
             string word;
-            string oneWord, tenWord;
+            string oneWord = "", tenWord;
 
-            string[] aTens = { "", "", "Twenty-", "Thirty-", "Forty-", "Fifty-", "Sixty-", "Seventy-", "Eighty-", "Ninety-" };
-            string[] aOnes = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" };
+            //      table driven design
+            //string[] aTens = { "", "", "Twenty-", "Thirty-", "Forty-", "Fifty-", "Sixty-", "Seventy-", "Eighty-", "Ninety-" };
+            //string[] aOnes = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" };
 
             int tens = num / 10;
             int ones = num % 10;
@@ -77,6 +78,7 @@ namespace Samples
             //      table driven design
             //word = aTens[tens] + aOnes[ones];
 
+            //  convert the TENs digit
             switch (tens)
             {
                 case 2: tenWord = "Twenty-"; break;
@@ -90,10 +92,25 @@ namespace Samples
                 default: tenWord = ""; break;
             }
 
-            oneWord = OnesToEnglish(ones);
+            //  covert the ONEs digit
+            switch (ones)
+            {
+                case 0: oneWord = ""; break;
+                case 1: oneWord = "One"; break;
+                case 2: oneWord = "Two"; break;
+                case 3: oneWord = "Three"; break;
+                case 4: oneWord = "Four"; break;
+                case 5: oneWord = "Five"; break;
+                case 6: oneWord = "Six"; break;
+                case 7: oneWord = "Seven"; break;
+                case 8: oneWord = "Eight"; break;
+                case 9: oneWord = "Nine"; break;
+            }
+
+            //  now we have a good word for the numbers 1 - 9 and 20 - 99
             word = tenWord + oneWord;
 
-            //      Special Cases 0 and the teens
+            //      Special Cases 0 and 10 - 19
             switch (num)
             {
                 case 0:  word = "Zero"; break;
@@ -107,30 +124,10 @@ namespace Samples
                 case 16:
                 case 17:
                 case 19:
-                    word = aOnes[ones] + "teen";
+                    word = oneWord + "teen";
                     break;
             }
             return word.TrimEnd('-');
-        }
-
-        public static string OnesToEnglish(int ones)
-        {
-            string word = "";
-
-            switch (ones)
-            {
-                case 0: word = ""; break;
-                case 1: word = "One"; break;
-                case 2: word = "Two"; break;
-                case 3: word = "Three"; break;
-                case 4: word = "Four"; break;
-                case 5: word = "Five"; break;
-                case 6: word = "Six"; break;
-                case 7: word = "Seven"; break;
-                case 8: word = "Eight"; break;
-                case 9: word = "Nine"; break;
-            }
-            return word;
         }
 
         private static int GetSeconds(string time)

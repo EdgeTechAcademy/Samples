@@ -111,9 +111,10 @@ namespace Samples
                     case "^":       result = Math.Pow(num1,num2); break;
                     case "n":       result = -num1;             break;
                     case "sqrt":    result = Math.Sqrt(num1);   break;
-                    case "^2": result = Math.Pow(num1, 2); break;
-                    case "!":       result = Factorial((ulong) num1);   break;
-                    default:       result = 0;                 break;
+                    case "^2":      result = Math.Pow(num1, 2); break;
+                    case "|":       result = Math.Abs(num1); break;
+                    case "!":       result = Factorial((ulong)num1); break;
+                    default:        result = 0;                 break;
                 }
                 //  Console.WriteLine("{3:F2} = {0} {1}" + ((aEq.Length == 3) ? "{2}" : "", num1, aEq[1], num2, result);
                 if (aEq.Length == 3)

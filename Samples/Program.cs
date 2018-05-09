@@ -17,22 +17,22 @@ namespace Samples
                     case "menu":
                         Console.WriteLine("\tif\tfor\ttry\tgcd\tarray\tparse\tfib\n" +
                             "\tstrings\n\tlottery\tlist\tbar\tstring\tnum\twords\tfill\n" +
-                            "\tchange\ttime\tlist\tenglish\n\texit");
+                            "\tchange\ttime\tlist\tenglish\tequation\n\texit");
                         break;
-                    case "if":      IfStatements();     break;
-                    case "for":     ForStatements();    break;
-                    case "try":     LoopWithTryParse(); break;
-                    case "gcd":     GreatestCommonDivisor();    break;
-                    case "array":   ArrayExamples();    break;
-                    case "parse":   ParsingTest();      break;
-                    case "fib":     Fibonacci();        break;
-                    case "strings": FunWithStrings();   break;
-                    case "lottery": PlayLottery();      break;
-                    case "list":    ListDemo();         break;
-                    case "var":     Variables();        break;
-                    case "string":  StringTests();      break;
-                    case "num":     NumberCompare();    break;
-                    case "change":  MakeChange(); break;
+                    case "if": IfStatements(); break;
+                    case "for": ForStatements(); break;
+                    case "try": LoopWithTryParse(); break;
+                    case "gcd": GreatestCommonDivisor(); break;
+                    case "array": ArrayExamples(); break;
+                    case "parse": ParsingTest(); break;
+                    case "fib": Fibonacci(); break;
+                    case "strings": FunWithStrings(); break;
+                    case "lottery": PlayLottery(); break;
+                    case "list": ListDemo(); break;
+                    case "var": Variables(); break;
+                    case "string": StringTests(); break;
+                    case "num": NumberCompare(); break;
+                    case "change": MakeChange(); break;
                     case "time":
                         int seconds = 0;
                         while (seconds >= 0)
@@ -43,7 +43,7 @@ namespace Samples
                         }
                         break;
 
-                    case "words":   WordArrays();       break;
+                    case "words": WordArrays(); break;
                     case "fill":
                         string[] names = GetNameList(GetUserNumber("Array Size? "));
                         for (int i = 0; i < names.Length; i++)
@@ -52,7 +52,11 @@ namespace Samples
                         }
                         break;
 
-                    case "english" :
+                    case "equation":
+                        Equation();
+                        break;
+
+                    case "english":
                         for (int i = 0; i < 100; i++)
                         {
                             string english = ConvertToEnglish(i);
@@ -60,6 +64,62 @@ namespace Samples
                         }
                         break;
                 }
+            }
+        }
+
+        public static void Equation()
+        {
+            while (true)
+            {
+                double num1, num2 = 0;
+                //  ask user for equation
+                //  we trust the user to enter a proper equation with
+                //  a number followed by an operator followed by a number
+                //  separated by spaces
+                //      i.e.    10 * 55         5 + 2   
+                //              11 / 5          111 - 6
+                //              22345 % 17      22 ^ 2 = 484
+                //              5 ^2 = 3           -999 n = 999
+                //              100 sqrt
+                string eq = GetUserInput("Enter Equation: ");
+                if (eq.Length == 0)
+                    break;
+
+                //  break equation into individual pieces
+                string[] aEq = eq.Split(" ");
+
+                //      Convert the first and last elements to integers
+                double.TryParse(aEq[0], out num1);
+
+                //  we have a problem here if only one number is entered
+                //      i.e. 5 n or 6 ^2 or 100 sqrt
+                if(aEq.Length == 3)        //  what will keep me from dieing on the next line of code?!?!?!
+                {
+                    double.TryParse(aEq[2], out num2);
+                }
+
+                //      Decide how to do the math operation
+                //      aEq[1] holds the character representation of a math operator
+                double result = 0;
+                switch (aEq[1])
+                {
+                    case "*":       result = num1 * num2;       break;
+                    case "+":       result = num1 + num2;       break;
+                    case "-":       result = num1 - num2;       break;
+                    case "/":       result = num1 / num2;       break;
+                    case "%":       result = num1 % num2;       break;
+                    case "^":       result = Math.Pow(num1,num2); break;
+                    case "n":       result = -num1;             break;
+                    case "sqrt":    result = Math.Sqrt(num1);   break;
+                    case "^2": result = Math.Pow(num1, 2); break;
+                    case "!":       result = Factorial((ulong) num1);   break;
+                    default:       result = 0;                 break;
+                }
+                //  Console.WriteLine("{3:F2} = {0} {1}" + ((aEq.Length == 3) ? "{2}" : "", num1, aEq[1], num2, result);
+                if (aEq.Length == 3)
+                    Console.WriteLine("{3:F2} = {0} {1} {2}", num1, aEq[1], num2, result);
+                else
+                    Console.WriteLine("{2:F2} = {0} {1}", num1, aEq[1], result);
             }
         }
 
@@ -113,7 +173,7 @@ namespace Samples
             //      Special Cases 0 and 10 - 19
             switch (num)
             {
-                case 0:  word = "Zero"; break;
+                case 0: word = "Zero"; break;
                 case 10: word = "Ten"; break;
                 case 11: word = "Eleven"; break;
                 case 12: word = "Twelve"; break;
@@ -133,15 +193,15 @@ namespace Samples
         private static int GetSeconds(string time)
         {
             int seconds;
-            switch ( time.ToUpper() )
+            switch (time.ToUpper())
             {
-                case "Y":   seconds = 365 * 24 * 60 * 60;   break;
-                case "W":   seconds =   7 * 24 * 60 * 60;   break;
-                case "D":   seconds =       24 * 60 * 60;   break;
-                case "H":   seconds =            60 * 60;   break;
-                case "M":   seconds =                 60;   break;
-                case "S":   seconds = 1;                    break;
-                default:    seconds = -1;                   break;
+                case "Y": seconds = 365 * 24 * 60 * 60; break;
+                case "W": seconds = 7 * 24 * 60 * 60; break;
+                case "D": seconds = 24 * 60 * 60; break;
+                case "H": seconds = 60 * 60; break;
+                case "M": seconds = 60; break;
+                case "S": seconds = 1; break;
+                default: seconds = -1; break;
             }
             return seconds;
         }
@@ -290,7 +350,7 @@ Assignment
         */
         public static int GetWordCount(string str)
         {
-//            return str.Split(" ").Length;
+            //            return str.Split(" ").Length;
             string[] strArray = str.Split(" ");
             int wordCount = 0;
             for (int i = 0; i < strArray.Length; i++)
@@ -401,7 +461,7 @@ Assignment
             String.Format("[{0, 5}]", "Foo");      //   [∙∙Foo]
             String.Format("[{0, -5}]", "Foo");     //   [Foo∙∙]
             String.Format("[{0, -10}]", "Foo");    //   [Foo∙∙∙∙∙∙∙]
-    }
+        }
 
         public static int CalculateCentury(int year)
         {
@@ -419,7 +479,7 @@ Assignment
             while (true)
             {
                 string input = GetUserInput("give me anything or 'exit' or 'stats'\n\t-> ");
-                
+
                 //      exit if user types exit
                 if (input.Equals("exit"))
                     break;
@@ -533,7 +593,7 @@ Assignment
                 userResponse = GetUserInput("Add to List ");
                 names.Add(userResponse);
 
-            } while (! userResponse.ToLower().Equals("stop"));
+            } while (!userResponse.ToLower().Equals("stop"));
 
             Console.WriteLine();
             do
@@ -568,7 +628,7 @@ Assignment
         {
             int userNumber;
             string strNumber = GetUserInput(prompt);
-            while ( ! Int32.TryParse(strNumber, out userNumber))
+            while (!Int32.TryParse(strNumber, out userNumber))
             {
                 Console.WriteLine("That is not an integer");
                 strNumber = GetUserInput(prompt);
@@ -619,7 +679,7 @@ Assignment
                         Console.WriteLine("Found " + search + " at entry " + i);
                     }
                 }
-            } while (! search.Equals("stop"));
+            } while (!search.Equals("stop"));
         }
 
         public static void PlayLottery()
@@ -743,7 +803,7 @@ Assignment
             Console.WriteLine("Can I compare and ignore case? " + (ignoreCase ? "yup" : "nope"));
 
             string str1 = "STRING 1";
-            Console.WriteLine("Which string is 'bigger'?  {0}", str1.CompareTo("STRING 1") );
+            Console.WriteLine("Which string is 'bigger'?  {0}", str1.CompareTo("STRING 1"));
             Console.WriteLine("Which string is 'bigger'?  {0}", str1.CompareTo("STRING 2"));
             Console.WriteLine("Which string is 'bigger'?  {0}", String.Compare(str1, "string 1", StringComparison.CurrentCultureIgnoreCase));
 

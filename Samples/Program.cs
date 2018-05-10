@@ -8,26 +8,28 @@ namespace Samples
         /// <summary>
         /// 
         ///    Menu Options
-        ///     if          using if to compare three numbers to determine the largest
-        ///     for         ask user for start, end and increment values for a loop; then do the loop
-        ///     try         request test scores from user, calc total and average. Use TryParse to convert to number 
-        ///     gcd         determine the Greatest Common Divisor or two numbers
         ///     array       fill an array with names, search for name in array using Equals
-        ///     parse       three arras int, float and string. Based on user input figure out if it is a string, float or int, put value in correct array
+        ///     change      make proper change from a transaction
+        ///     dictionary  build a dictionary of courses containing students
+        ///     english     convert the numbers 0 to 99 to english words 73 Seventy-Three   13 Thirteen
+        ///     eq          enter in an equation (separated by spaces) 5 + 666 or 5 ! or 100 ^2 or 1000 sqrt
+        ///     exit      x or exit to close
         ///     fib         dispaly the first X number of Fibonacci numbers
-        ///     strings     various fun things you can do with strings 
-        ///     string      just different ways to compare strings
+        ///     fill        fill an array with names and display the array
+        ///     for         ask user for start, end and increment values for a loop; then do the loop
+        ///     gcd         determine the Greatest Common Divisor or two numbers
+        ///     if          using if to compare three numbers to determine the largest
         ///     lottery     enter a lottery and calulate your odds
         ///     list        add names to a List<string> use Contains and IndexOf to find matched elements and FindAll
-        ///     var         play with variables
+        ///     menu        show the menu
         ///     num         play with number - comparing
-        ///     words       get string of words find longs word and number of words in string
-        ///     fill        fill an array with names and display the array
-        ///     change      make proper change from a transaction
-        ///     eq          enter in an equation (separated by spaces) 5 + 666 or 5 ! or 100 ^2 or 1000 sqrt
+        ///     parse       three arras int, float and string. Based on user input figure out if it is a string, float or int, put value in correct array
+        ///     strings     various fun things you can do with strings 
+        ///     string      just different ways to compare strings
         ///     time        seconds in time period day, hour, week, year
-        ///     english     convert the numbers 0 to 99 to english words 73 Seventy-Three   13 Thirteen
-        ///     exit        x or exit to close
+        ///     try         request test scores from user, calc total and average. Use TryParse to convert to number 
+        ///     var         play with variables
+        ///     words       get string of words find longs word and number of words in string
 
         ///     
         /// </summary>
@@ -36,7 +38,7 @@ namespace Samples
         {
             while (true)
             {
-                switch (GetUserInput("? "))
+                switch (GetInput("? "))
                 {
                     case "exit": return;
                     case "x": return;
@@ -44,7 +46,7 @@ namespace Samples
                     case "menu":
                         Console.WriteLine(
                             "\tif\tfor\ttry\tgcd\tarray\tparse\tfib\n" +
-                            "\tstrings\tstring\tlottery\tlist\tvar\tnum\n" +
+                            "\tstrings\tstring\tlottery\tlist\tvar\tnum\tdictionary\n" +
                             "\tchange\teq\twords\tfill\ttime\tenglish\n\texit");
                         break;
                     case "if": IfStatements(); break;
@@ -61,12 +63,13 @@ namespace Samples
                     case "list": ListDemo(); break;
                     case "var": Variables(); break;
                     case "num": NumberCompare(); break;
+                    case "dictionary":  DictionaryDemo(); break;
 
                     case "change": MakeChange(); break;
                     case "eq": Equation(); break;
                     case "words": WordArrays(); break;
                     case "fill":
-                        string[] names = GetNameList(GetUserNumber("Array Size? "));
+                        string[] names = GetNameList(GetNumber("Array Size? "));
                         for (int i = 0; i < names.Length; i++)
                         {
                             Console.WriteLine("Name {0} : {1}", i, names[i]);
@@ -77,7 +80,7 @@ namespace Samples
                         int seconds = 0;
                         while (seconds >= 0)
                         {
-                            string time = GetUserInput("Unit of Time: ");
+                            string time = GetInput("Unit of Time: ");
                             seconds = GetSeconds(time);
                             Console.WriteLine("There are " + seconds + " seconds in a " + time);
                         }
@@ -157,13 +160,13 @@ namespace Samples
             Console.WriteLine("Enter names: ");
             for (int i = 0; i < strArray.Length; i++)
             {
-                strArray[i] = GetUserInput(i + ": ");
+                strArray[i] = GetInput(i + ": ");
             }
 
             string search;
             do
             {
-                search = GetUserInput("Search for Student: ");
+                search = GetInput("Search for Student: ");
                 for (int i = 0; i < strArray.Length; i++)
                 {
                     if (strArray[i].Equals(search))
@@ -248,44 +251,155 @@ namespace Samples
 
         private static void DictionaryDemo()
         {
-            //string course, student;
-            //Dictionary<string, List<string>> courses = new Dictionary<string, List<string>>();
+            // Create a new dictionary of strings, with string keys.
+            //
+            Dictionary<string, List<string>> courses = new Dictionary<string, List<string>>();
 
-            //do
+            while (true)
+            {
+                string className = GetInput("Class Name: ");
+                if (className.Length == 0)
+                    break;
+                List<string> students = new List<string>();
+                int s = 0;
+                while (true)
+                {
+                    string student = GetInput("Student " + s + ": ");
+                    if (student.Length == 0)
+                        break;
+                    // The Add method throws an exception if the new key is 
+                    // already in the dictionary.
+                    try
+                    {
+                        students.Add(student);
+                    }
+                    catch (ArgumentException)
+                    {
+                        Console.WriteLine("Student {0} is already in the class", student);
+                    }
+                }
+                // ContainsKey can be used to test keys before inserting 
+                // them.
+                if ( ! courses.ContainsKey(className) )
+                {
+                    courses.Add(className, students);
+                }
+                else
+                {
+                    Console.WriteLine("Class {0} is already in the system. Students will be added to existing class.", className);
+                    courses[className].AddRange(students);
+                }
+            }
+
+            foreach (KeyValuePair<string, List<string>> course in courses)
+            {
+                Console.WriteLine("{0}", course.Key);
+                foreach (var student in course.Value)
+                {
+                    Console.WriteLine("\t{0}", student);
+                }
+            }
+
+            while (true)
+            {
+                string findStudent = GetInput("Search for: ");
+                if (findStudent.Length == 0)
+                    break;
+
+                List<string> takingCourses = new List<string>();
+                foreach (KeyValuePair<string, List<string>> course in courses)
+                {
+                    if(course.Value.Contains(findStudent))
+                    {
+                        takingCourses.Add(course.Key);
+                    }
+                }
+                Console.WriteLine("{0}: is taking these course:", findStudent);
+                foreach (var course in takingCourses)
+                {
+                    Console.WriteLine("\t{0}", course);
+                }
+            }
+            // The Item property is another name for the indexer, so you 
+            // can omit its name when accessing elements. 
+            //Console.WriteLine("For key = \"rtf\", value = {0}.", courses["rtf"]);
+
+            //// The indexer can be used to change the value associated
+            //// with a key.
+            //openWith["rtf"] = "winword.exe";
+            //Console.WriteLine("For key = \"rtf\", value = {0}.", openWith["rtf"]);
+
+            //// If a key does not exist, setting the indexer for that key
+            //// adds a new key/value pair.
+            //openWith["doc"] = "winword.exe";
+
+            //// The indexer throws an exception if the requested key is
+            //// not in the dictionary.
+            //try
             //{
-            //    course = GetUserInput("Add to Courses");
-            //    student = GetUserInput("Add to Student");
-            //    courses.Add(course);
+            //    Console.WriteLine("For key = \"tif\", value = {0}.",
+            //        openWith["tif"]);
+            //}
+            //catch (KeyNotFoundException)
+            //{
+            //    Console.WriteLine("Key = \"tif\" is not found.");
+            //}
 
-            //} while (!userResponse.ToLower().Equals("stop"));
+            //// When a program often has to try keys that turn out not to
+            //// be in the dictionary, TryGetValue can be a more efficient 
+            //// way to retrieve values.
+            //string value = "";
+            //if (openWith.TryGetValue("tif", out value))
+            //{
+            //    Console.WriteLine("For key = \"tif\", value = {0}.", value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Key = \"tif\" is not found.");
+            //}
 
+
+            //// When you use foreach to enumerate dictionary elements,
+            //// the elements are retrieved as KeyValuePair objects.
             //Console.WriteLine();
-            //do
+            //foreach (KeyValuePair<string, string> kvp in openWith)
             //{
-            //    userResponse = GetUserInput("Search List for: ");
-            //    bool found = names.Contains(userResponse);
-            //    if (found)
-            //    {
-            //        int where = names.IndexOf(userResponse);
-            //        Console.WriteLine("\t" + userResponse + " Was found at " + where);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("\t" + userResponse + " Was not found");
-            //    }
-            //} while (!userResponse.ToLower().Equals("stop"));
+            //    Console.WriteLine("Key = {0}, Value = {1}",
+            //        kvp.Key, kvp.Value);
+            //}
 
+            //// To get the values alone, use the Values property.
+            //Dictionary<string, string>.ValueCollection valueColl =
+            //    openWith.Values;
+
+            //// The elements of the ValueCollection are strongly typed
+            //// with the type that was specified for dictionary values.
             //Console.WriteLine();
-            //do
+            //foreach (string s in valueColl)
             //{
-            //    userResponse = GetUserInput("Find in List: ");
-            //    List<string> subNames = names.FindAll(p => p.Contains(userResponse));
-            //    foreach (var item in subNames)
-            //    {
-            //        Console.WriteLine("\t" + item);
-            //    }
-            //} while (userResponse.Length > 0);
+            //    Console.WriteLine("Value = {0}", s);
+            //}
 
+            //// To get the keys alone, use the Keys property.
+            //Dictionary<string, string>.KeyCollection keyColl =
+            //    openWith.Keys;
+
+            //// The elements of the KeyCollection are strongly typed
+            //// with the type that was specified for dictionary keys.
+            //Console.WriteLine();
+            //foreach (string s in keyColl)
+            //{
+            //    Console.WriteLine("Key = {0}", s);
+            //}
+
+            //// Use the Remove method to remove a key/value pair.
+            //Console.WriteLine("\nRemove(\"doc\")");
+            //openWith.Remove("doc");
+
+            //if (!openWith.ContainsKey("doc"))
+            //{
+            //    Console.WriteLine("Key \"doc\" is not found.");
+            //}
         }
 
         public static void Equation()
@@ -302,7 +416,7 @@ namespace Samples
                 //              22345 % 17      22 ^ 2 = 484
                 //              5 ^2 = 3           -999 n = 999
                 //              100 sqrt
-                string eq = GetUserInput("Enter Equation: ");
+                string eq = GetInput("Enter Equation: ");
                 if (eq.Length == 0)
                     break;
 
@@ -314,7 +428,7 @@ namespace Samples
 
                 //  we have a problem here if only one number is entered
                 //      i.e. 5 n or 6 ^2 or 100 sqrt
-                if(aEq.Length == 3)        //  what will keep me from dieing on the next line of code?!?!?!
+                if (aEq.Length == 3)        //  what will keep me from dieing on the next line of code?!?!?!
                 {
                     double.TryParse(aEq[2], out num2);
                 }
@@ -324,19 +438,19 @@ namespace Samples
                 double result = 0;
                 switch (aEq[1])
                 {
-                    case "*":       result = num1 * num2;       break;
-                    case "+":       result = num1 + num2;       break;
-                    case "-":       result = num1 - num2;       break;
-                    case "/":       result = num1 / num2;       break;
-                    case "%":       result = num1 % num2;       break;
-                    case "gcd":     result = (double)GetGCD((long)num1, (long)num2); break;
-                    case "^":       result = Math.Pow(num1,num2); break;
-                    case "n":       result = -num1;             break;
-                    case "sqrt":    result = Math.Sqrt(num1);   break;
-                    case "^2":      result = Math.Pow(num1, 2); break;
-                    case "|":       result = Math.Abs(num1);    break;
-                    case "!":       result = Factorial((long)num1); break;
-                    default:        result = 0;                 break;
+                    case "*": result = num1 * num2; break;
+                    case "+": result = num1 + num2; break;
+                    case "-": result = num1 - num2; break;
+                    case "/": result = num1 / num2; break;
+                    case "%": result = num1 % num2; break;
+                    case "gcd": result = (double)GetGCD((long)num1, (long)num2); break;
+                    case "^": result = Math.Pow(num1, num2); break;
+                    case "n": result = -num1; break;
+                    case "sqrt": result = Math.Sqrt(num1); break;
+                    case "^2": result = Math.Pow(num1, 2); break;
+                    case "|": result = Math.Abs(num1); break;
+                    case "!": result = Factorial((long)num1); break;
+                    default: result = 0; break;
                 }
 
                 //  Console.WriteLine("{3:F2} = {0} {1}" + ((aEq.Length == 3) ? "{2}" : "", num1, aEq[1], num2, result);
@@ -430,7 +544,7 @@ namespace Samples
 
             for (int i = 0; i < size; i++)
             {
-                list[i] = GetUserInput("Name " + (i + 1) + " ");
+                list[i] = GetInput("Name " + (i + 1) + " ");
             }
             return list;
         }
@@ -535,9 +649,9 @@ namespace Samples
         private static void ForStatements()
         {
 
-            long start = GetUserNumber("Initialize loop: ");
-            long loop = GetUserNumber("Enter loop termination: ");
-            long inc = GetUserNumber("Enter loop increment: ");
+            long start = GetNumber("Initialize loop: ");
+            long loop = GetNumber("Enter loop termination: ");
+            long inc = GetNumber("Enter loop increment: ");
 
             for (long i = start; i < loop; i += inc)
             {
@@ -566,10 +680,10 @@ namespace Samples
             long smallNum, remainder, gcd;
             do
             {
-                smallNum = GetUserNumber("Enter a Number: ");
-                remainder = GetUserNumber("Enter a Number: ");
+                smallNum = GetNumber("Enter a Number: ");
+                remainder = GetNumber("Enter a Number: ");
                 gcd = GetGCD(smallNum, remainder);
-            } while (GetUserInput("GCD is: " + gcd + " Enter Y to continue: ").Equals("y"));
+            } while (GetInput("GCD is: " + gcd + " Enter Y to continue: ").Equals("y"));
         }
 
         private static long GetGCD(long smallNum, long remainder)
@@ -593,9 +707,9 @@ namespace Samples
 
         private static void IfStatements()
         {
-            long student1Age = GetUserNumber("Enter Student 1 age: ");
-            long student2Age = GetUserNumber("Enter Student 2 age: ");
-            long student3Age = GetUserNumber("Enter Student 3 age: ");
+            long student1Age = GetNumber("Enter Student 1 age: ");
+            long student2Age = GetNumber("Enter Student 2 age: ");
+            long student3Age = GetNumber("Enter Student 3 age: ");
 
             Console.WriteLine("Student " + ((student1Age > student2Age && student1Age > student3Age) ? 1 :
                                             (student2Age > student3Age) ? 2 : 3) + " is the oldest student");
@@ -652,19 +766,26 @@ namespace Samples
         private static void ListDemo()
         {
             string userResponse;
-            Console.WriteLine("Enter 'stop' to stop entering names");
-            List<string> names = new List<string>() { "Gary", "Thomas", "James" };
-            do
+            Console.WriteLine("Empty line to stop");
+            List<string> names = new List<string>() { "Able", "Baker", "Charlie", "Dorthy" };
+            while (true)
             {
-                userResponse = GetUserInput("Add to List ");
+                userResponse = GetInput("Add a Name: ");
+                if (userResponse.Length == 0)
+                    break;
                 names.Add(userResponse);
-
-            } while (!userResponse.ToLower().Equals("stop"));
-
-            Console.WriteLine();
-            do
+            }
+            foreach (string  name in names)
             {
-                userResponse = GetUserInput("Search List for: ");
+                Console.WriteLine("\t{0}", name);
+            }
+            
+            Console.WriteLine();
+            while(true)
+            {
+                userResponse = GetInput("Search for name: ");
+                if (userResponse.Length == 0)
+                    break;
                 bool found = names.Contains(userResponse);
                 if (found)
                 {
@@ -675,18 +796,29 @@ namespace Samples
                 {
                     Console.WriteLine("\t" + userResponse + " Was not found");
                 }
-            } while (!userResponse.ToLower().Equals("stop"));
+            }
 
             Console.WriteLine();
-            do
+            while (true)
             {
-                userResponse = GetUserInput("Find in List: ");
-                List<string> subNames = names.FindAll(p => p.Contains(userResponse));
+                userResponse = GetInput("Find in List: ");
+                if (userResponse.Length == 0)
+                    break;
+                List<string> subNames = names.FindAll(name => name.Contains(userResponse));
+
+                //  The above line of code is doing this
+                //List<string> subNames = new List<string>();
+                //foreach (string name in names)
+                //{
+                //    if (name.Contains(userResponse))
+                //        subNames.Add(name);
+                //}
+
                 foreach (var item in subNames)
                 {
                     Console.WriteLine("\t" + item);
                 }
-            } while (userResponse.Length > 0);
+            }
 
         }
 
@@ -728,10 +860,10 @@ namespace Samples
                 decimal price = (decimal)intPrice / 100.00M + rnd.Next(10);
                 decimal tendered = rnd.Next((int)price, (int)price + rnd.Next(30)) + 1;
                 change = MakingChange(tendered, price);
-            } while (! GetUserInput(change).Equals("x"));
+            } while (!GetInput(change).Equals("x"));
         }
 
-        public static string MakingChange(int tenderedAmt, decimal price)
+        public static string MakingChange(decimal tenderedAmt, decimal price)
         {
             string[] name = { "$10", "$5", "$1", "Quater", "Dime", "Nickel", "Cent" };
             decimal[] denom = { 10.00M, 5.00M, 1.00M, .25M, .10M, 0.05M, 0.01M };
@@ -754,13 +886,13 @@ namespace Samples
             long result;
             long number1, number2;
 
-            number1 = GetUserNumber("#1 ");
-            number2 = GetUserNumber("#2 ");
+            number1 = GetNumber("#1 ");
+            number2 = GetNumber("#2 ");
             result = GetBigger(number1, number2);
             Console.WriteLine("This is the bigger number: {0}", result);
 
-            number1 = GetUserNumber("#1 ");
-            number2 = GetUserNumber("#2 ");
+            number1 = GetNumber("#1 ");
+            number2 = GetNumber("#2 ");
             result = GetBigger2(number1, number2);
             Console.WriteLine("This is the bigger number: {0}", result);
 
@@ -776,7 +908,7 @@ namespace Samples
 
             while (true)
             {
-                string input = GetUserInput("give me anything or 'exit' or 'stats'\n\t-> ");
+                string input = GetInput("give me anything or 'exit' or 'stats'\n\t-> ");
 
                 //      exit if user types exit
                 if (input.Equals("exit"))
@@ -856,8 +988,8 @@ namespace Samples
             long balls, pick;
             while (true)
             {
-                balls= GetUserNumber("Enter a Number (0 to quit): ");
-                pick = GetUserNumber("Enter a Number: ");
+                balls = GetNumber("Enter a Number (0 to quit): ");
+                pick = GetNumber("Enter a Number: ");
                 if (balls <= 0)
                     break;
                 Console.WriteLine(Factorial(balls) / Factorial(pick));
@@ -874,10 +1006,10 @@ namespace Samples
         {
             while (true)
             {
-                string str1 = GetUserInput("String 1: ");
+                string str1 = GetInput("String 1: ");
                 if (str1.Length == 0)
                     break;
-                string str2 = GetUserInput("String 2: ");
+                string str2 = GetInput("String 2: ");
                 Console.WriteLine("{0} :  {1} {2} Ignore case", str1, str2, str1.Equals(str2, StringComparison.OrdinalIgnoreCase));
                 Console.WriteLine("{0} == {1} {2} ", str1, str2, str1 == str2);
                 Console.WriteLine("{0} ?  {1} {2} CompareTo", str1, str2, str1.CompareTo(str2));
@@ -939,7 +1071,7 @@ namespace Samples
         private static void WordArrays()
         {
             int result;
-            string line = GetUserInput("Enter a string ");
+            string line = GetInput("Enter a string ");
             result = GetWordCount(line);
             Console.WriteLine("WordCount for {0} : {1} words", line, result);
 
@@ -948,20 +1080,20 @@ namespace Samples
 
         }
 
-        private static long GetUserNumber(string prompt)
+        private static long GetNumber(string prompt)
         {
             long userNumber;
-            string strNumber = GetUserInput(prompt);
+            string strNumber = GetInput(prompt);
             while (!Int64.TryParse(strNumber, out userNumber))
             {
                 Console.WriteLine("That is not an integer");
-                strNumber = GetUserInput(prompt);
+                strNumber = GetInput(prompt);
             }
 
             return userNumber;
         }
 
-        private static string GetUserInput(string prompt)
+        private static string GetInput(string prompt)
         {
             Console.Write(prompt);
             string str = Console.ReadLine();

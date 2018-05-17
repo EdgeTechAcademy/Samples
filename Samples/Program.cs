@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Samples
 {
@@ -8,6 +9,7 @@ namespace Samples
         /// <summary>
         /// 
         ///    Menu Options
+        ///     addtoList   Ask user for max number, then ask for input string add to different lists based on length or value of input
         ///     array       fill an array with names, search for name in array using Equals
         ///     change      make proper change from a transaction
         ///     dictionary  build a dictionary of courses containing students
@@ -15,15 +17,19 @@ namespace Samples
         ///     eq          enter in an equation (separated by spaces) 5 + 666 or 5 ! or 100 ^2 or 1000 sqrt
         ///     exit      x or exit to close
         ///     fib         dispaly the first X number of Fibonacci numbers
+        ///     file        read a file and search it
         ///     fill        fill an array with names and display the array
         ///     for         ask user for start, end and increment values for a loop; then do the loop
         ///     gcd         determine the Greatest Common Divisor or two numbers
         ///     if          using if to compare three numbers to determine the largest
+        ///     isword      does an input string follow the rules of a word
         ///     lottery     enter a lottery and calulate your odds
         ///     list        add names to a List<string> use Contains and IndexOf to find matched elements and FindAll
         ///     menu        show the menu
+        ///     mult        multiplication table
         ///     num         play with number - comparing
         ///     parse       three arras int, float and string. Based on user input figure out if it is a string, float or int, put value in correct array
+        ///     phone       convert words to phone number
         ///     strings     various fun things you can do with strings 
         ///     string      just different ways to compare strings
         ///     time        seconds in time period day, hour, week, year
@@ -45,53 +51,39 @@ namespace Samples
                     case "":
                     case "menu":
                         Console.WriteLine(
-                            "\tif\tfor\ttry\tgcd\tarray\tparse\tfib\n" +
-                            "\tstrings\tstring\tlottery\tlist\tvar\tnum\tdictionary\n" +
-                            "\tchange\teq\twords\tfill\ttime\tenglish\n\texit");
+                            "\taddToList\tarray\tchange\tdictionary\tenglish\teq\tfib\tfile\tfill\n" +
+                            "\tfor\tgcd\tif\tlist\tlottery\tmult\tnum\tparse\tphone\n" +
+                            "\tstrings\tstring\ttime\ttry\tvar\twords\n\texit");
                         break;
-                    case "if": IfStatements(); break;
-                    case "for": ForStatements(); break;
-                    case "try": LoopWithTryParse(); break;
-                    case "gcd": GCD(); break;
+
+                    case "addtolist": AddToList(); break;
                     case "array": ArrayExamples(); break;
-                    case "parse": ParsingTest(); break;
+                    case "change": MakeChange(); break;
+                    case "dictionary": DictionaryDemo(); break;
+                    case "english": ConvertToEnglishDriver(); break;
+                    case "eq": Equation(); break;
                     case "fib": Fibonacci(); break;
+                    case "file": ReadFile(); break;
+                    case "fill": GetNameList(GetNumber("Array Size? ")); break;
+
+                    case "for": ForStatements(); break;
+                    case "gcd": GCD(); break;
+                    case "if": IfStatements(); break;
+                    case "isword": IsWordDriver(); break;
+                    case "list": ListDemo(); break;
+                    case "lottery": PlayLottery(); break;
+                    case "mult": MultiplicationTable(); break;
+                    case "num": NumberCompare(); break;
+                    case "parse": ParsingTest(); break;
+                    case "phone": PhoneNumber(); break;
 
                     case "strings": FunWithStrings(); break;
                     case "string": StringTests(); break;
-                    case "lottery": PlayLottery(); break;
-                    case "list": ListDemo(); break;
+                    case "time": GetSeconds(); break;
+                    case "try": LoopWithTryParse(); break;
                     case "var": Variables(); break;
-                    case "num": NumberCompare(); break;
-                    case "dictionary":  DictionaryDemo(); break;
-
-                    case "change": MakeChange(); break;
-                    case "eq": Equation(); break;
                     case "words": WordArrays(); break;
-                    case "fill":
-                        string[] names = GetNameList(GetNumber("Array Size? "));
-                        for (int i = 0; i < names.Length; i++)
-                        {
-                            Console.WriteLine("Name {0} : {1}", i, names[i]);
-                        }
-                        break;
-
-                    case "time":
-                        int seconds = 0;
-                        while (seconds >= 0)
-                        {
-                            string time = GetInput("Unit of Time: ");
-                            seconds = GetSeconds(time);
-                            Console.WriteLine("There are " + seconds + " seconds in a " + time);
-                        }
-                        break;
-
-                    case "english":
-                        for (int i = 0; i < 100; i++)
-                        {
-                            string english = ConvertToEnglish(i);
-                            Console.WriteLine("{0} in English: {1}", i, english);
-                        }
+                    case "test":
                         break;
                 }
             }
@@ -99,31 +91,50 @@ namespace Samples
 
         /*
             create variables that have the correct type
-                  body temp 98.6 float
+                    bool wasVowelFound;
+                    int  vowelsFound;
+
+                    body temp 98.6 float
+                  const int SPEED_OF_LIGHT   299998 KM / S
                   altitude    int
                   miles per gallon          float
                   is my car running         boolean
-                  salary                    float, decimal, double
+                  money                     decimal
+                  non-integer               float, double
                   Bill Gates net worth      long, ulong
-                  ave test scores           float, decimal
+                  ave test scores           float
                   world population > 8B     long  ulong
                   distance                  ulong measure in miles, ly
 
+            declaration assignment
+                    decimal salary;     //      this is the declaration of the variable
+                    salary = 100000M;   //      this is the assignment
+
+                    int numOfApples;    //      declaration
+                    numOfApples = 0;    //      assignment to initialize our counter
+                    numOfApples++;      //      done inside a loop. this is also an assignment statement
+
+                    string name = "edge tech";      //  declaration and assignment
+                    
+                    int numberOfAlienVisitations;
+                    
+
             comparison     
-                    if
-                    operators   ==  <   >   <=  !=
+                    if (oneThing ComparisonOperator anotherThing)
+                    ComparisonOperator      ==  <   >   <= >= !=
                     compare X to Z
-                    if ( x operator z )
+                    if ( x ComparisonOperator z )
                     {
                     }
 
             loops
                     for         when you know how many times
-                    do-while    (at least one time)    
-                    while
+                    foreach     when you don't need the index
+                    do-while    Test at the bottom so you will do the loop at least one time
+                    while       Test at the top. execute 0 or more times
 
                     break       exiting a loop
-                    return      exit loop and exit the method
+                    return      exit the method (oh and BTW exit the loop)
 
                     continue    skip part of the loop. Go to the top of the loop
 
@@ -140,11 +151,82 @@ namespace Samples
                     {
                             every thing between the braces
                     }
+                public void TruncateTable(string tableName)
+                {
+                    sqlExecute ("Truncate table " + tableName);
+                }
+
+                public int CountZebras(Zoo zoo)
+                {
+                    int cntZebras;
+                    cntZebras = 0;
+                    foreach (Animal animal in zoo)
+                    {
+                        if (animal.Type == "Zebra")
+                        {
+                            cntZebras++;
+                        }
+                    }
+                    return cntZebras;
+                }
+
             classes
                 properties
                 methods
                 constructors
                 */
+
+        /// <summary>
+        ///     Ask user for max number, then ask for input string add to different lists based on length or value of input
+        /// 
+        /// </summary>
+        private static void AddToList()
+        {
+            List<string> smallStuff = new List<string>();
+            List<string> bigStuff = new List<string>();
+            List<int> bigInt = new List<int>();
+            List<int> littleInt = new List<int>();
+            long big = GetNumber("Enter a number: ");
+            while (true)
+            {
+                string input = GetInput("Enter something ");
+                if (input == "")
+                    break;
+
+                int theNumber;
+                if (Int32.TryParse(input, out theNumber))
+                {
+                    if (theNumber >= big)
+                        bigInt.Add(theNumber);
+                    else
+                        littleInt.Add(theNumber);
+                }
+                else if (input.Length >= big)
+                    bigStuff.Add(input);
+                else
+                    smallStuff.Add(input);
+            }
+            Console.WriteLine();
+            foreach (var item in bigStuff)
+            {
+                Console.WriteLine("Big   " + item);
+            }
+            Console.WriteLine();
+            foreach (var item in smallStuff)
+            {
+                Console.WriteLine("Small " + item);
+            }
+            Console.WriteLine();
+            foreach (var item in littleInt)
+            {
+                Console.WriteLine("Little# " + item);
+            }
+            Console.WriteLine();
+            foreach (var item in bigInt)
+            {
+                Console.WriteLine("Big#    " + item);
+            }
+        }
 
         private static void ArrayExamples()
         {
@@ -175,6 +257,17 @@ namespace Samples
                     }
                 }
             } while (!search.Equals("stop"));
+        }
+
+        public static void ConvertToEnglishDriver()
+        {
+            int num;
+            do
+            {
+                num = (int)GetNumber("Enter # bewteen 0 and 100");
+                string english = ConvertToEnglish(num);
+                Console.WriteLine("{0} in English: {1}", num, english);
+            } while (num != 0);
         }
 
         public static string ConvertToEnglish(int num)
@@ -280,7 +373,7 @@ namespace Samples
                 }
                 // ContainsKey can be used to test keys before inserting 
                 // them.
-                if ( ! courses.ContainsKey(className) )
+                if (!courses.ContainsKey(className))
                 {
                     courses.Add(className, students);
                 }
@@ -309,7 +402,7 @@ namespace Samples
                 List<string> takingCourses = new List<string>();
                 foreach (KeyValuePair<string, List<string>> course in courses)
                 {
-                    if(course.Value.Contains(findStudent))
+                    if (course.Value.Contains(findStudent))
                     {
                         takingCourses.Add(course.Key);
                     }
@@ -546,6 +639,10 @@ namespace Samples
             {
                 list[i] = GetInput("Name " + (i + 1) + " ");
             }
+            for (int i = 0; i < list.Length; i++)
+            {
+                Console.WriteLine("Name {0} : {1}", i, list[i]);
+            }
             return list;
         }
 
@@ -561,7 +658,7 @@ namespace Samples
 
         private static void Fibonacci()
         {
-            ulong fib1 = 1, fib2 = 1;
+            ulong curr = 1, prev = 1;
             ulong next;
             int num;
             Console.Write("Enter how many Fibonacci numbers you want: ");
@@ -569,9 +666,9 @@ namespace Samples
 
             for (int i = 3; i < num; i++)
             {
-                next = fib1 + fib2;
-                fib2 = fib1;
-                fib1 = next;
+                next = curr + prev;
+                prev = curr;
+                curr = next;
                 Console.WriteLine("Fibonacci # " + i + " = " + next);
             }
         }
@@ -617,12 +714,12 @@ namespace Samples
             int dIndex = name.LastIndexOf('d');
             Console.WriteLine("Found last 'd' at: " + dIndex);
 
-            name = "Gary Thomas James";
+            name = "Edge Tech Academy";
             string initials = "";
             string[] aNames = name.Split(" ");
             foreach (string str in aNames)
             {
-                initials += str.Substring(0, 1);
+                initials += str[0];
                 string padLeft = str.PadLeft(15, '.');
                 string padRight = str.PadRight(15, '_');
                 Console.WriteLine("Pad Left  ->" + padLeft + "<");
@@ -659,20 +756,24 @@ namespace Samples
             }
         }
 
-        private static int GetSeconds(string time)
+        private static void GetSeconds()
         {
             int seconds;
-            switch (time.ToUpper())
+            do
             {
-                case "Y": seconds = 365 * 24 * 60 * 60; break;
-                case "W": seconds = 7 * 24 * 60 * 60; break;
-                case "D": seconds = 24 * 60 * 60; break;
-                case "H": seconds = 60 * 60; break;
-                case "M": seconds = 60; break;
-                case "S": seconds = 1; break;
-                default: seconds = -1; break;
-            }
-            return seconds;
+                string time = GetInput("Unit of Time: ");
+                switch (time.ToUpper())
+                {
+                    case "Y": seconds = 365 * 24 * 60 * 60; break;
+                    case "W": seconds = 7 * 24 * 60 * 60; break;
+                    case "D": seconds = 24 * 60 * 60; break;
+                    case "H": seconds = 60 * 60; break;
+                    case "M": seconds = 60; break;
+                    case "S": seconds = 1; break;
+                    default: seconds = -1; break;
+                }
+                Console.WriteLine("There are " + seconds + " seconds in a " + time);
+            } while (seconds >= 0);
         }
 
         private static void GCD()
@@ -763,6 +864,77 @@ namespace Samples
             }
         }
 
+        private static void IsWordDriver()
+        {
+            while (true)
+            {
+                string word = GetInput("Enter a 'word': ");
+                if (word.Length == 0)
+                    break;
+                Boolean ok = IsWord(word);
+                Console.WriteLine("Word {0} was {1}a word", word, ok ? "" : "not ");
+            }
+        }
+
+        private static bool IsWord(string word)
+        {
+            bool vowel = false, consanant = false, firstLetter = true;
+
+            foreach (char letter in word)
+            {
+                switch (letter)
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                        Console.WriteLine("Bad Word: {0}. Contains a number!", word);
+                        return false;
+                }
+                if (letter >= '0' && letter <= '9')
+                {
+                    Console.WriteLine("Bad Word: {0}. Contains a number!", word);
+                    return false;
+                }
+                if ("0123456789".Contains(letter + ""))
+                {
+                    Console.WriteLine("Bad Word: {0}. Contains a number!", word);
+                    return false;
+                }
+
+                if (!firstLetter && letter >= 'A' && letter <= 'Z')
+                {
+                    Console.WriteLine("Bad Word: {0}. Contains a Capital letter!", word);
+                    return false;
+                }
+                if ("aeiouy".Contains(letter + ""))
+                {
+                    vowel = true;
+                }
+                if ("bcdfghjklmnpqrstvwxyz".Contains(letter + ""))
+                {
+                    consanant = true;
+                }
+                firstLetter = false;
+            }
+
+            //  we only get here if we have searched all of the letters and not found a number
+            //  so if we found a vowel and a consant then we are good
+            if (vowel && consanant)
+            {
+                return true;
+            }
+
+            //  how about if we found a vowel and not a consant and the length is one 
+            return (vowel && !consanant && word.Length == 1 && "ai".Contains(word));
+        }
+
         private static void ListDemo()
         {
             string userResponse;
@@ -775,13 +947,13 @@ namespace Samples
                     break;
                 names.Add(userResponse);
             }
-            foreach (string  name in names)
+            foreach (string name in names)
             {
                 Console.WriteLine("\t{0}", name);
             }
-            
+
             Console.WriteLine();
-            while(true)
+            while (true)
             {
                 userResponse = GetInput("Search for name: ");
                 if (userResponse.Length == 0)
@@ -879,6 +1051,27 @@ namespace Samples
             }
 
             return change;
+        }
+
+        public static void MultiplicationTable()
+        {
+            int max = (int)GetNumber("Enter # < = 20 ");
+            Console.Write("       ");
+            for (int i = 0; i <= max; i++)
+            {
+                Console.Write("{0,4}", i);
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i <= max; i++)
+            {
+                Console.Write("{0,4} | ", i);
+                for (int j = 0; j <= max; j++)
+                {
+                    Console.Write("{0,4}", i * j);
+                }
+                Console.WriteLine();
+            }
         }
 
         private static void NumberCompare()
@@ -983,6 +1176,36 @@ namespace Samples
             }
         }       //  end of ParsingTest
 
+        public static void PhoneNumber()
+        {
+            string phoneNum;
+            string phoneWord;
+            do
+            {
+                phoneWord = GetInput("Enter Phone #: ").ToUpper();
+                phoneNum = "";
+                for (int i = 0; i < phoneWord.Length; i++)
+                {
+                    switch (phoneWord[i])
+                    {
+                        case 'A': case 'B': case 'C': phoneNum += "2"; break;
+                        case 'D': case 'E': case 'F': phoneNum += "3"; break;
+                        case 'G': case 'H': case 'I': phoneNum += "4"; break;
+                        case 'J': case 'K': case 'L': phoneNum += "5"; break;
+                        case 'M': case 'N': case 'O': phoneNum += "6"; break;
+                        case 'P': case 'Q': case 'R': case 'S': phoneNum += "7"; break;
+                        case 'T': case 'U': case 'V': phoneNum += "8"; break;
+                        case 'W': case 'X': case 'Y': case 'Z': phoneNum += "9"; break;
+                        case ' ': case '-': case '(': case ')': break;
+                        default: phoneNum += phoneWord[i]; break;
+                    }
+                    if (i == 2 || i == 5)
+                        phoneNum += "-";
+                }
+                Console.WriteLine("Dial: {0} for {1}", phoneNum, phoneWord);
+            } while (phoneWord != "");
+        }
+
         public static void PlayLottery()
         {
             long balls, pick;
@@ -1000,6 +1223,63 @@ namespace Samples
         {
             Random random = new Random();
             return random.Next(min, max);
+        }
+
+        private static void ReadFile()
+        {
+            string line, header;
+            List<User> users = new List<User>();
+
+            // Read the file and display it line by line.  
+            System.IO.StreamReader file = new System.IO.StreamReader(@"..\..\..\users.csv");
+            header = file.ReadLine();
+            string[] cols = header.Split(",");
+            Console.WriteLine("Here are your options to search for");
+            foreach (var col in cols)
+            {
+                Console.WriteLine("\t" + col);
+            }
+
+            while ((line = file.ReadLine()) != null)
+            {
+                string[] properties = line.Split(",");
+                User user = new User(properties[0], properties[1], properties[2], decimal.Parse(properties[3]));
+                Console.WriteLine(user);
+                users.Add(user);
+            }
+
+            file.Close();
+            Console.WriteLine("There were {0} users.", users.Count);
+            while (true)
+            {
+                string column = GetInput("Column to Search: ");
+                if (column == "")
+                    break;
+                string value = GetInput("Search for: ");
+                foreach (var item in users)
+                {
+                    if (column == cols[0])           //      case "Name":
+                    {
+                        if (item.Name == value)
+                            Console.WriteLine(item);
+                    }
+                    if (column == cols[1])           //      case "Company":
+                    {
+                        if (item.Company.Contains(value))
+                            Console.WriteLine(item);
+                    }
+                    if (column == cols[2])           //      case "AccountNUmber":
+                    {
+                        if (item.AccountNum == value)
+                            Console.WriteLine(item);
+                    }
+                    if (column == cols[3])           //      case "MonthlyFee":
+                    {
+                        if (item.Fee + "" == value)       //  yes we are cheating big time here by not converting the users input
+                            Console.WriteLine(item);
+                    }
+                }
+            }
         }
 
         public static void StringTests()

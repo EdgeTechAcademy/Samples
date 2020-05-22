@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 
@@ -33,11 +34,14 @@ namespace Samples
         ///     num         play with number - comparing
         ///     parse       three arras int, float and string. Based on user input figure out if it is a string, float or int, put value in correct array
         ///     phone       convert words to phone number
+        ///     rand        generate random numbers
+        ///     square      print a square
         ///     strings     various fun things you can do with strings 
         ///     string      just different ways to compare strings
         ///     tree        print a tree
         ///     time        seconds in time period day, hour, week, year
         ///     try         request test scores from user, calc total and average. Use TryParse to convert to number 
+        ///     triangle    print out a right triangle and an equilateral Triangle
         ///     var         play with variables
         ///     words       get string of words find longs word and number of words in string
 
@@ -59,9 +63,11 @@ namespace Samples
                     case "":
                     case "menu":
                         Console.WriteLine(
-                            "\taddToList\tarray\tchange\tdictionary\tenglish\teq\tfib\tfile\tfill\n" +
-                            "\tfor\tgcd\tif\tinitials\tlist\tlottery\tmult\tnum\tparse\tphone\n" +
-                            "\tstrings\tstring\ttime\ttree\ttry\tvar\twords\n\texit");
+                            "\t addToList\t array   \t change   \t dictionary\t english \n" +
+                            "\t eq       \t fib     \t file     \t fill      \t for     \n" +
+                            "\t gcd      \t if      \t initials \t list      \t lottery \n" +
+                            "\t mult     \t num     \t parse    \t rand      \t phone   \n" +
+                            "\t square   \t strings \t string   \t time      \t try     \t var       \t words   \t exit");
                         break;
                     case "addtolist": AddToList(); break;
                     case "array": ArrayExamples(); break;
@@ -84,15 +90,132 @@ namespace Samples
                     case "num": NumberCompare(); break;
                     case "parse": ParsingTest(); break;
                     case "phone": PhoneNumber(); break;
+                    case "rand": RandomNumber(); break;
 
+                    case "square": Square(); break;
                     case "strings": FunWithStrings(); break;
                     case "string": StringTests(); break;
                     case "time": GetSeconds(); break;
-                    case "tree": Tree(); break;
+                    case "triangle": Triangle(); break;
                     case "try": LoopWithTryParse(); break;
                     case "var": Variables(); break;
                     case "words": WordArrays(); break;
+                    case "insq": WordsInSquare(); break;
                 }
+            }
+        }
+
+        static void Square()
+        {
+            int num = (int)GetNumber("How big is your Square: ");
+            SquareV1(num);
+            SquareV2(num);
+        }
+
+        static void SquareV1(int side)
+        {
+            for (int i = 0; i < side; i++)      //  do the top row
+            {
+                Console.Write("*");
+            }
+            Console.WriteLine();
+            for (int i = 0; i < side - 2; i++)    //  do the middle rows (side - 2)
+            {
+                Console.Write("*");
+                for (int j = 0; j < side - 2; j++)    //  do the middle spaces (side - 2)
+                {
+                    Console.Write(" ");
+                }
+                Console.WriteLine("*");
+            }
+            for (int i = 0; i < side; i++)      //  do the bottom row
+            {
+                Console.Write("*");
+            }
+            Console.WriteLine();
+        }
+
+        static void SquareV2(int side)
+        {
+            string topBottom = "".PadRight(side, '*');
+            Console.WriteLine(topBottom);
+            for (int i = 0; i < side - 2; i++)
+            {
+                Console.WriteLine("*" + "".PadRight(side - 2) + "*");
+            }
+            Console.WriteLine(topBottom);
+        }
+
+        private static void Triangle()
+        {
+            int num = (int)GetNumber("How big is your Triangle: ");
+
+            TriangleV0(num);
+            TriangleV1(num);
+            TriangleV2(num);
+            TriangleV3(num);
+            TriangleV4(num);
+        }
+
+        static void TriangleV0(int height)
+        {
+            for (int row = 1; row <= height; row++)
+            {
+                Console.Write($"{row,3} ");
+                for (int col = 1; col <= row; col++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+        }
+        private static void TriangleV1(int num)
+        {
+            string line = "";
+            for (int i = 0; i <= num; i++)
+            {
+                line += "*";
+                Console.WriteLine($"{i,3} {line}");
+            }
+        }
+        static void TriangleV2(int height)
+        {
+            for (int level = 0; level < height; level++)
+            {
+                Console.Write($"{level,3} ");
+                string pad = "".PadLeft(height - level - 1, '.');
+                string row = "".PadLeft(level * 2 + 1, '*');
+                Console.WriteLine($"{pad}{row}");
+            }
+        }
+        static void TriangleV3(int height)
+        {
+            string pad = "".PadLeft(height, '.');
+            string row = "*";
+            Console.WriteLine(pad);
+            for (int level = 0; level < height; level++)
+            {
+                pad = pad.Substring(1);
+                Console.WriteLine($"{pad}{row}");
+                row += "**";
+            }
+        }
+
+        public static void TriangleV4(int height)
+        {
+            for (int l = 1; l <= height; l++)
+            {
+                printDot(height - l, " ");
+                printDot(l * 2 - 1, "^");
+                Console.WriteLine();
+            }
+        }
+
+        public static void printDot(int howMany, string dots)
+        {
+            for (int i = 0; i < howMany; i++)
+            {
+                Console.Write(dots);
             }
         }
 
@@ -642,22 +765,22 @@ namespace Samples
                 double result = 0;
                 switch (aEq[1])
                 {
-                    case "*"    :   result = num1 * num2; break;
-                    case "+"    :   result = num1 + num2; break;
-                    case "-"    :   result = num1 - num2; break;
-                    case "/"    :   result = num1 / num2; break;
-                    case "%"    :   result = num1 % num2; break;
+                    case "*": result = num1 * num2; break;
+                    case "+": result = num1 + num2; break;
+                    case "-": result = num1 - num2; break;
+                    case "/": result = num1 / num2; break;
+                    case "%": result = num1 % num2; break;
 
-                    case "gcd"  :   result = (double)GetGCD((long)num1, (long)num2); break;
-                    case "n"    :   result = -num1;                 break;
-                    case "!"    :   result = Factorial((long)num1); break;
+                    case "gcd": result = (double)GetGCD((long)num1, (long)num2); break;
+                    case "n": result = -num1; break;
+                    case "!": result = Factorial((long)num1); break;
 
-                    case "^"    :   result = Math.Pow(num1, num2);  break;
-                    case "sqrt" :   result = Math.Sqrt(num1);       break;
-                    case "^2"   :   result = Math.Pow(num1, 2);     break;
-                    case "|"    :   result = Math.Abs(num1);        break;
+                    case "^": result = Math.Pow(num1, num2); break;
+                    case "sqrt": result = Math.Sqrt(num1); break;
+                    case "^2": result = Math.Pow(num1, 2); break;
+                    case "|": result = Math.Abs(num1); break;
 
-                    default     :   result = 0; break;
+                    default: result = 0; break;
                 }
 
                 //  Console.WriteLine("{3:F2} = {0} {1}" + ((aEq.Length == 3) ? "{2}" : "", num1, aEq[1], num2, result);
@@ -765,7 +888,7 @@ namespace Samples
 
         private static ulong Factorial(long num)
         {
-            Console.WriteLine("Factorial"); 
+            Console.WriteLine("Factorial");
             Console.WriteLine("    calculate the Factorial value of the number just entered\n");
             ulong factorial = 1;
             for (int i = 1; i <= num; i++)
@@ -924,12 +1047,6 @@ namespace Samples
             return smallNum;
         }
 
-        private static DateTime GetDay()
-        {
-            DateTime dt = new DateTime();
-            return dt;
-        }
-
         private static void IfStatements()
         {
             Console.WriteLine("Basic examples using a IF statement to compare numbers\n");
@@ -1012,9 +1129,15 @@ namespace Samples
             {
                 switch (letter)
                 {
-                    case '0':       case '1':       case '2':
-                    case '3':       case '4':       case '5':
-                    case '6':       case '7':       case '8':
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
                     case '9':
                         Console.WriteLine("Bad Word: {0}. Contains a number!", word);
                         return false;
@@ -1169,24 +1292,27 @@ namespace Samples
         {
             Console.WriteLine("MakeChange");
             Console.WriteLine("    Another great job interview question\n");
+
             string change;
             Random rnd = new Random();
             do
             {
-                int intPrice = rnd.Next(1, 100);
-                decimal price = (decimal)intPrice / 100.00M + rnd.Next(10);
-                decimal tendered = rnd.Next((int)price, (int)price + rnd.Next(30)) + 1;
-                change = MakingChange(tendered, price);
-            } while (!GetInput(change + "\nx-exit ").Equals("x"));
+                int intPrice = rnd.Next(100, 600);
+                decimal ramainder = (decimal)intPrice / 100.00M + rnd.Next(10);
+                Console.WriteLine($"Change from {ramainder:F2}");
+                change = MakingChangeV1(ramainder);
+                Console.WriteLine(change);
+                change = MakingChangeV2(ramainder);
+                Console.WriteLine(change);
+            } while (!GetInput("\nx-exit ").Equals("x"));
         }
 
-        public static string MakingChange(decimal tenderedAmt, decimal price)
+        public static string MakingChangeV1(decimal remainder)
         {
-            string[] name = { "$10", "$5", "$1", "Quater", "Dime", "Nickel", "Cent" };
+            string[] name = { "$10", "$5", "$1", "Quarter", "Dime", "Nickel", "Cent" };
             decimal[] denom = { 10.00M, 5.00M, 1.00M, .25M, .10M, 0.05M, 0.01M };
             decimal coin;
-            decimal remainder = tenderedAmt - price;
-            string change = String.Format("Change from {0:F2} for {1:F2} = {2:F2}\n\t", tenderedAmt, price, remainder);
+            string change = "";
 
             for (int z = 0; z < denom.Length; z++)
             {
@@ -1198,7 +1324,7 @@ namespace Samples
             return change;
         }
 
-        static string MakingChange(decimal change)        //  another version of making change
+        static string MakingChangeV2(decimal change)        //  another version of making change
         {
             int dollars, quarters, dimes, nickles, cents;
 
@@ -1211,31 +1337,48 @@ namespace Samples
             nickles = (int)(change / 0.05m);
             change %= 0.05m;
             cents = (int)(change / 0.01m);
-            change %= 0.01m;
 
             return "Change = " + dollars + " Dollars " + quarters + " Quarters " + dimes + " Dimes " + nickles + " Nickles " + cents + " Cents";
         }
 
-        public static void MultiplicationTable()
+        /*
+         *
+       | 0  1  2  3  4  5
+    ---|------------------
+     0 | 0  0  0  0  0  0
+     1 | 0  1  2  3  4  5
+     2 | 0  2  4  6  8 10
+     3 | 0  3  6  9 12 15
+     4 | 0  4  8 12 16 20
+     5 | 0  5 10 15 20 25
+ 
+         * */
+
+        static void MultiplicationTable()
         {
             Console.WriteLine("Multiplication Table");
             Console.WriteLine("    Build a table for the number entered\n");
-            int max = (int)GetNumber("Enter # < = 20 ");
-            Console.Write("       ");
-            for (int i = 0; i <= max; i++)
+            int num = (int)GetNumber("Enter # <= 25 ");
+
+            Console.Write("    |");
+            for (int i = 0; i <= num; i++)
             {
-                Console.Write("{0,4}", i);
+                Console.Write($"{i,4}");
             }
             Console.WriteLine();
-
-            for (int i = 0; i <= max; i++)
+            Console.Write("----+");
+            for (int i = 0; i <= num; i++)
             {
-                Console.Write("{0,4} | ", i);
-                for (int j = 0; j <= max; j++)
+                Console.Write($"----");
+            }
+
+            for (int i = 0; i <= num; i++)
+            {
+                Console.Write($"\n{i,4}|");
+                for (int j = 0; j <= num; j++)
                 {
-                    Console.Write("{0,4}", i * j);
+                    Console.Write($"{i * j,4}");
                 }
-                Console.WriteLine();
             }
         }
 
@@ -1389,10 +1532,16 @@ namespace Samples
             }
         }
 
-        private static int RandomNumber(int min, int max)
+        private static void RandomNumber()
         {
+            long min = GetNumber("Min: ");
+            long max = GetNumber("Max: ");
+            long howMany = GetNumber("How Many: ");
             Random random = new Random();
-            return random.Next(min, max);
+            for (int i = 0; i < howMany; i++)
+            {
+                Console.WriteLine($"{i,2} {random.Next((int)min, (int)max)}");
+            }
         }
 
         public static void StringTests()
@@ -1407,25 +1556,6 @@ namespace Samples
                 Console.WriteLine("{0} == {1} {2} ", str1, str2, str1 == str2);
                 Console.WriteLine("{0} ?  {1} {2} CompareTo", str1, str2, str1.CompareTo(str2));
                 Console.WriteLine("{0} != {1} {2} ", str1, str2, (str1 != str2));
-            }
-        }
-
-        public static void Tree()
-        {
-            int treeSize = (int)GetNumber("How big is the tree? ");
-            for (int l = 1; l <= treeSize; l++)
-            {
-                printDot(treeSize - l, " ");
-                printDot(l * 2 - 1, "^");
-                Console.WriteLine();
-            }
-        }
-
-        public static void printDot(int howMany, string dots)
-        {
-            for (int i = 0; i < howMany; i++)
-            {
-                Console.Write(dots);
             }
         }
 
@@ -1499,6 +1629,29 @@ namespace Samples
 
             string longestWord = GetLongestWord(line);
             Console.WriteLine("Longest word: {0}", longestWord);
+        }
+
+        static void WordsInSquare()
+        {
+            string str = GetInput("Enter Phrase: ");
+            /*  hello Edge Tech Academy
+             *  ***********
+             *  * hello   *
+             *  * edge    *
+             *  * tech    *
+             *  * academy *
+             *  ***********
+             */
+            string[] ar = str.Split(" ");
+
+            int maxLen = ar.OrderByDescending(s => s.Length).First().Length;
+            
+            Console.WriteLine("".PadRight(maxLen + 4, '*'));    //  top line
+            foreach (var word in ar)                //  print individual words
+            {
+                Console.WriteLine($"* {word.PadRight(maxLen)} *");
+            }
+            Console.WriteLine("".PadRight(maxLen + 4, '*'));    //  bottom line
         }
 
         private static long GetNumber(string prompt)

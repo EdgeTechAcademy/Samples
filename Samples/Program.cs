@@ -67,7 +67,8 @@ namespace Samples
                             "\t eq       \t fib     \t file     \t fill      \t for     \n" +
                             "\t gcd      \t if      \t initials \t list      \t lottery \n" +
                             "\t mult     \t num     \t parse    \t rand      \t phone   \n" +
-                            "\t square   \t strings \t string   \t time      \t try     \t var       \t words   \t exit");
+                            "\t square   \t strings \t string   \t time      \t try     \n" +
+                            "\t var      \t words   \t exit");
                         break;
                     case "addtolist": AddToList(); break;
                     case "array": ArrayExamples(); break;
@@ -1055,8 +1056,8 @@ namespace Samples
             long student2Age = GetNumber("Enter Student 2 age: ");
             long student3Age = GetNumber("Enter Student 3 age: ");
 
-            Console.WriteLine("Student" + ((student1Age > student2Age && student1Age > student3Age) ? 1 :
-                                           (student2Age > student3Age) ? 2 : 3) + " is the oldest student");
+            Console.WriteLine("Student " + ((student1Age > student2Age && student1Age > student3Age) ? 1 :
+                                            (student2Age > student3Age) ? 2 : 3) + " is the oldest student");
 
             if (student1Age > student2Age && student1Age > student3Age)
             {
@@ -1186,7 +1187,7 @@ namespace Samples
             Console.WriteLine("    enter a name and get the initials for that person");
             Console.WriteLine("    great job interview question\n");
             string userResponse = GetInput("Enter persons name: ");
-            string[] words = userResponse.Split(' ');
+            string[] words = userResponse.Trim().Split(' ');
             string initials = "";
             foreach (var word in words)
             {

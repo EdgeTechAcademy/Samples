@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 
@@ -1381,6 +1380,7 @@ namespace Samples
                     Console.Write($"{i * j,4}");
                 }
             }
+            Console.WriteLine();
         }
 
         private static void NumberCompare()
@@ -1623,6 +1623,10 @@ namespace Samples
 
         private static void WordArrays()
         {
+            Console.WriteLine("Words");
+            Console.WriteLine("    Enter in a string of words\n" +
+                              "    Count the words, find the longest word\n" +
+                              "    display the words in alphabetical order");
             int result;
             string line = GetInput("Enter a string ");
             result = GetWordCount(line);
@@ -1630,10 +1634,23 @@ namespace Samples
 
             string longestWord = GetLongestWord(line);
             Console.WriteLine("Longest word: {0}", longestWord);
+            string[] words = line.Split(" ");
+            Array.Sort(words);
+            Console.WriteLine("In alpha order");
+            foreach (var word in words)
+            {
+                Console.WriteLine(word);
+            }
         }
 
         static void WordsInSquare()
         {
+            Console.WriteLine("Words in a Square\n" +
+                              "    **********\n" +
+                              "    * Words  *\n" +
+                              "    * in     *\n" +
+                              "    * Square *\n" +
+                              "    **********");
             string str = GetInput("Enter Phrase: ");
             /*  hello Edge Tech Academy
              *  ***********
